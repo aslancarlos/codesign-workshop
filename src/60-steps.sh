@@ -354,9 +354,9 @@ step_diag() {
 step_cleanup() {
   title "$(t 'Limpeza / logout' 'Limpieza / logout')"
   printf '%s' "$(t "Apagar '$WORK'? [s/N] " "¿Borrar '$WORK'? [s/N] ")"; read -r a
-  { [ "$a" = s ] || [ "$a" = S ]; } && { rm -rf "$WORK"; ok "$(t 'Removido.' 'Eliminado.')"; } || note "$(t 'Mantido.' 'Conservado.')"
+  if [ "$a" = s ] || [ "$a" = S ]; then rm -rf "$WORK"; ok "$(t 'Removido.' 'Eliminado.')"; else note "$(t 'Mantido.' 'Conservado.')"; fi
   printf '%s' "$(t 'Logout da service account? [s/N] ' '¿Logout de la service account? [s/N] ')"; read -r b
-  { [ "$b" = s ] || [ "$b" = S ]; } && { pkcs11config logout; ok "$(t 'Logout feito.' 'Logout hecho.')"; } || note "$(t 'Login mantido.' 'Sesión conservada.')"
+  if [ "$b" = s ] || [ "$b" = S ]; then pkcs11config logout; ok "$(t 'Logout feito.' 'Logout hecho.')"; else note "$(t 'Login mantido.' 'Sesión conservada.')"; fi
   pause
 }
 

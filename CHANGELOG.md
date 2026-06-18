@@ -6,6 +6,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Fixed
+
+- `step_cleanup`: replaced the `A && B || C` pattern with explicit `if/then/else`
+  so the "kept" branch can never run after a successful action (ShellCheck
+  SC2015). No user-visible behavior change.
+
 ### Changed
 
 - Refactored the script into modules under `src/`, assembled into the
