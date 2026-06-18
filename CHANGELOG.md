@@ -4,26 +4,6 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Fixed
-
-- `step_cleanup`: replaced the `A && B || C` pattern with explicit `if/then/else`
-  so the "kept" branch can never run after a successful action (ShellCheck
-  SC2015). No user-visible behavior change.
-
-### Changed
-
-- Refactored the script into modules under `src/`, assembled into the
-  single distributable `codesign-workshop.sh` by `build.sh`. No behavior change;
-  the generated file is byte-equivalent to the previous one.
-
-### Added
-
-- `build.sh` (with a `--check` mode used by CI) to (re)generate and verify the
-  distributable.
-- CI now verifies the distributable is in sync with `src/` before linting.
-
 ## [1.0.0] - 2026-06-18
 
 ### Added
@@ -49,4 +29,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Fully environment-variable driven configuration; no hardcoded identities,
   keys, tenants, or labels.
 
-[1.0.0]: https://keepachangelog.com/en/1.1.0/
+### Project / tooling
+
+- Modular source layout under `src/`, assembled into the single distributable
+  `codesign-workshop.sh` by `build.sh` (with a `--check` mode used by CI).
+- CI (`bash -n`, `build.sh --check`, ShellCheck) on push and pull requests.
+- Documentation: README, ARCHITECTURE, USAGE, SECURITY, CONTRIBUTING,
+  CODE_OF_CONDUCT, issue/PR templates, and `.env.example`.
+
+[1.0.0]: https://github.com/aslancarlos/codesign-workshop/releases/tag/v1.0.0

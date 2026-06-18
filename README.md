@@ -1,5 +1,11 @@
 # Code Signing Workshop (PKCS#11 → Cloud HSM)
 
+[![CI](https://github.com/aslancarlos/codesign-workshop/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/aslancarlos/codesign-workshop/actions/workflows/shellcheck.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Made with Bash](https://img.shields.io/badge/made%20with-bash-1f425f.svg)](https://www.gnu.org/software/bash/)
+[![ShellCheck](https://img.shields.io/badge/shellcheck-clean-brightgreen.svg)](https://www.shellcheck.net/)
+[![Languages: PT · ES](https://img.shields.io/badge/UI-PT%20%C2%B7%20ES-orange.svg)](#)
+
 An interactive, menu-driven terminal **workshop** that demonstrates, live, how
 **HSM-backed code signing** works through the **PKCS#11** interface against a
 cloud Code Sign Manager service (such as **CyberArk Code Sign Manager – SaaS**,
