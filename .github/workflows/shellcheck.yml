@@ -1,4 +1,4 @@
-name: shellcheck
+name: ci
 
 on:
   push:
@@ -7,16 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-  lint:
+  build-and-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify the distributable is in sync with src/
+        run: ./build.sh --check
+
       - name: Syntax check (bash -n)
         run: bash -n codesign-workshop.sh
 
-      - name: ShellCheck
+      - name: ShellCheck (generated script + build.sh)
         uses: ludeeus/action-shellcheck@master
         with:
           severity: warning
-          additional_files: codesign-workshop.sh
+          additional_files: codesign-workshop.sh build.sh
+          ignore_paths: src
