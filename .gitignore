@@ -1,0 +1,23 @@
+# Local environment / secrets — NEVER commit these
+.env
+*.key
+*.pem
+*.p12
+*.pfx
+*_token
+*api_token*
+service_account*
+
+# Workshop working directory & generated artifacts
+codesign_demo/
+*.sig
+*.p7s
+*.jar
+signing_audit.log
+
+# Editor / OS noise
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
