@@ -11,21 +11,50 @@ Thanks for your interest in improving the Code Signing Workshop!
 - Keep the script **portable**: POSIX-friendly `bash`, no hard dependency that
   isn't already optional and degraded gracefully.
 
+## Project layout
+
+The workshop is **developed as modules** under `src/` but **distributed as one
+self-contained file** (`codesign-workshop.sh`) so it can be copied to a target
+machine and run with no extra files.
+
+```
+src/
+  00-header.sh      shebang-less header comment + `set -o pipefail`
+  10-config.sh      configurable environment variables
+  20-style.sh       colors, the t() i18n helper, output helpers
+  30-lib.sh         API/helpers (get_tok, gql, ensure_*, log_signing, ...)
+  40-diagrams.sh    ASCII flow diagrams
+  50-bootstrap.sh   require_bin, choose_lang
+  60-steps.sh       all step_* functions + step_guided
+  70-menu.sh        the menu renderer
+  90-main.sh        entry point (the run loop)
+build.sh            concatenates src/*.sh -> codesign-workshop.sh
+codesign-workshop.sh  GENERATED — do not edit by hand
+```
+
+Modules are numeric-prefixed so they concatenate in dependency order.
+
 ## Development setup
 
-There is no build step. Edit `codesign-workshop.sh` and validate locally.
+**Edit the modules under `src/`, never the generated file.** Then rebuild and
+validate:
 
 ```bash
-# Syntax check (no execution)
+./build.sh            # regenerate codesign-workshop.sh from src/
 bash -n codesign-workshop.sh
-
-# Lint (recommended)
-shellcheck codesign-workshop.sh
+shellcheck codesign-workshop.sh build.sh   # lint the generated file + builder
+./build.sh --check    # what CI runs: fails if the committed file is stale
 ```
+
+Commit **both** the changed `src/` modules **and** the regenerated
+`codesign-workshop.sh`. CI rejects a PR whose distributable is out of sync.
+
+> ShellCheck runs on the **generated** file, not on individual modules (they are
+> fragments and are not valid standalone scripts).
 
 Fully exercising the workshop requires a real Code Sign Manager client and a
 tenant you are authorized to use; most contributions can be validated with
-`bash -n` + `shellcheck` plus a manual run of the menu rendering.
+`./build.sh --check` + `shellcheck` plus a manual run of the menu rendering.
 
 ## Style
 
@@ -47,9 +76,12 @@ tenant you are authorized to use; most contributions can be validated with
 
 ## Adding a new step
 
-1. Write a `step_x()` function with a `title`, explanation `note`s, and the
-   commands (use `show` to print a command, then run it).
-2. Add it to the menu, the dispatch `case`, and (if part of the narrative) the
-   guided run `step_guided`.
+1. In `src/60-steps.sh`, write a `step_x()` function with a `title`, explanation
+   `note`s, and the commands (use `show` to print a command, then run it).
+2. Register it in `src/70-menu.sh` (menu line) and `src/90-main.sh` (dispatch
+   `case`); if it is part of the narrative, add it to `step_guided` in
+   `src/60-steps.sh`.
 3. If it signs something, call `log_signing <key> <tool> <artifact-path> <algo>
    <result> [pre-hash]` so it appears in the signatures log.
+4. Run `./build.sh`, then `shellcheck codesign-workshop.sh`, and commit both the
+   modules and the regenerated file.

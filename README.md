@@ -166,6 +166,22 @@ empty `list`: that means the authenticated identity is **not an authorized
 signer** of a project that contains *ready* keys — fix it in the console, then
 re-login with `--force`.
 
+## Development
+
+The workshop is **developed as modules** under `src/` and **distributed as a
+single self-contained file** (`codesign-workshop.sh`) so it can be copied to a
+target machine and run with no extra files.
+
+```bash
+# edit modules under src/, then regenerate the distributable:
+./build.sh
+# verify it is in sync (this is what CI runs):
+./build.sh --check
+```
+
+Do **not** edit `codesign-workshop.sh` by hand — it is generated. See
+[`CONTRIBUTING.md`](CONTRIBUTING.md#project-layout) for the module map.
+
 ## Contributing
 
 Contributions are welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md) and the
